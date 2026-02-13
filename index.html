@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story Quiz ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: absolute;
+            background: #ff4081;
+            width: 20px;
+            height: 20px;
+            transform: rotate(45deg);
+            animation: float 6s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        .heart:before, .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4081;
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotate(45deg) translateY(0); }
+            50% { transform: rotate(45deg) translateY(-20px); }
+        }
+
+        /* Main Container */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.3);
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            position: relative;
+            z-index: 2;
+            border: 8px solid #ff4081;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #ff4081;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1:after {
+            content: '❤️';
+            position: absolute;
+            right: -40px;
+            animation: heartbeat 1.2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .subtitle {
+            color: #ff4081;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: #ffe6e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 25px 0;
+            border: 2px solid #ffcccc;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #ff4081;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ffcccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ff4081, #ff80ab);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: #fff5f5;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 3px solid #ffcccc;
+            box-shadow: 0 8px 20px rgba(255, 128, 171, 0.2);
+        }
+
+        .question-number {
+            color: #ff4081;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .question-text {
+            color: #d81b60;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            margin: 20px 0 30px 0;
+            min-height: 80px;
+        }
+
+        /* Multiple Choice Options */
+        .options-container {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .option {
+            padding: 20px;
+            background: white;
+            border: 3px solid #ffcccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            color: #d81b60;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover {
+            transform: translateX(10px);
+            border-color: #ff4081;
+            background: #fff5f5;
+        }
+
+        .option.selected {
+            background: #ff4081;
+            color: white;
+            border-color: #d81b60;
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+        }
+
+        .option.correct {
+            background: #4CAF50;
+            color: white;
+            border-color: #388E3C;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #ffe6e6;
+            border-radius: 50%;
+            margin-right: 20px;
+            font-weight: bold;
+            color: #ff4081;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .option.selected .option-letter {
+            background: white;
+            color: #ff4081;
+        }
+
+        .option-content {
+            flex-grow: 1;
+        }
+
+        /* Navigation Buttons */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-prev {
+            background: #ffe6e6;
+            color: #ff4081;
+            border: 2px solid #ffcccc;
+        }
+
+        .btn-next {
+            background: linear-gradient(to right, #ff4081, #ff80ab);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Score Display */
+        .score-container {
+            text-align: center;
+            background: linear-gradient(135deg, #ff4081, #ff80ab);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 10px 20px rgba(255, 64, 129, 0.3);
+        }
+
+        .score-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .score-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Error Popup */
+        .error-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .error-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .error-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 5px solid #ff4081;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .error-popup.active .error-content {
+            transform: scale(1);
+        }
+
+        .error-title {
+            color: #ff4081;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .error-message {
+            color: #d81b60;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .close-error {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-error:hover {
+            background: #d81b60;
+            transform: translateY(-2px);
+        }
+
+        /* Special Surprise - Beautiful Message Card */
+        .surprise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff4081, #ff80ab);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: auto;
+            padding: 40px 20px;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s;
+            box-sizing: border-box;
+        }
+
+        .surprise.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .surprise h2 {
+            color: white;
+            font-size: 4rem;
+            margin-bottom: 30px;
+            text-align: center;
+            animation: heartbeat 1.2s infinite;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .surprise-content {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .love-definition {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            border-left: 5px solid white;
+            padding-left: 25px;
+        }
+
+        .greeting {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .love-list {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px 35px;
+            margin: 20px 0;
+        }
+
+        .love-list h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .love-list ol {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        .love-list li {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .closing {
+            font-size: 1.3rem;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        .signature {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .surprise-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .surprise-heart {
+            position: absolute;
+            font-size: 35px;
+            color: white;
+            opacity: 0.5;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Results Page */
+        .results-container {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .results-title {
+            color: #ff4081;
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .final-score {
+            font-size: 4rem;
+            color: #ff4081;
+            font-weight: bold;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-message {
+            color: #d81b60;
+            font-size: 1.5rem;
+            margin: 20px 0 40px 0;
+            line-height: 1.6;
+        }
+
+        .restart-btn {
+            background: linear-gradient(to right, #ff4081, #ff80ab);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(255, 64, 129, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 0 auto;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(255, 64, 129, 0.5);
+        }
+
+        /* Hidden Class */
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h1:after {
+                right: -30px;
+            }
+            
+            .question-text {
+                font-size: 1.5rem;
+            }
+            
+            .option {
+                padding: 15px;
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            
+            .surprise h2 {
+                font-size: 3rem;
+            }
+            
+            .surprise-content {
+                padding: 25px;
+            }
+            
+            .love-definition {
+                font-size: 1.2rem;
+            }
+            
+            .greeting {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h1:after {
+                display: none;
+            }
+            
+            .question-text {
+                font-size: 1.3rem;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+            
+            .option-letter {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+                margin-right: 15px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .surprise h2 {
+                font-size: 2.5rem;
+            }
+            
+            .surprise-content {
+                padding: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div id="floatingHearts"></div>
+
+    <!-- Error Popup -->
+    <div class="error-popup" id="errorPopup">
+        <div class="error-content">
+            <h2 class="error-title"><i class="fas fa-heart-broken"></i> Not Quite Right</h2>
+            <p class="error-message" id="errorMessage">That's not the correct answer. Try again, my love!</p>
+            <button class="close-error" id="closeError">Try Again ❤️</button>
+        </div>
+    </div>
+
+    <!-- Special "I Love You Bujji" Surprise - With Your Beautiful Message -->
+    <div class="surprise" id="surprise">
+        <div class="surprise-hearts" id="surpriseHearts"></div>
+        <h2>I LOVE YOU BUJJI ❤️</h2>
+        <div class="surprise-content">
+            <div class="love-definition">
+                "Love is like a memory of someone we deeply care about. Even when they're not around, their memories give us the strength to live our lives without hesitation."
+            </div>
+            
+            <div class="greeting">Hello bujji,</div>
+            
+            <div class="message">
+                This is the first time I'm trying something new on this Valentine's Day. I wanted to share a few words about love from my perspective. To me, this is what true love means. No matter what life brings, I promise I will carry this feeling in my heart throughout my entire life.
+            </div>
+            
+            <div class="love-list">
+                <h3>Some of the things I love about you…</h3>
+                <ol>
+                    <li><strong>Your killer eyes</strong> — they are the very reason I fell for you.</li>
+                    <li><strong>Your care</strong> — it feels as pure and comforting as a mother's love, and that is what makes our bond unbreakable.</li>
+                    <li><strong>Your kindness</strong> — especially the way you forgive me so easily, more than anyone else ever could.</li>
+                    <li><strong>Your smile</strong> — even though I may not be able to bring it out all the time, the moments I do are very special to me.</li>
+                    <li><strong>Your lips</strong> — soft and gentle, like those of a newborn baby.</li>
+                    <li><strong>Your childishness</strong> — you may be an adult, but there's a beautiful little child inside you that I adore.</li>
+                    <li><strong>Your voice</strong> — it's like music to me. I could listen to your sweet nonsense every day and still fall asleep peacefully.</li>
+                    <li><strong>Your laugh</strong> — it has a way of making everything around you feel lighter and happier.</li>
+                    <li><strong>Your patience</strong> — the way you handle me, even in my worst moods, means more than I can explain.</li>
+                    <li><strong>The way you understand me</strong> — sometimes without me even saying a word, you just know.</li>
+                    <li><strong>How comfortable I feel with you</strong> — with you, I can be completely myself without any fear or hesitation.</li>
+                    <li><strong>Your strength</strong> — even when you don't realize it, the strength you carry inspires me.</li>
+                    <li><strong>Your presence</strong> — being with you brings a kind of peace I cannot find anywhere else.</li>
+                    <li><strong>Your angry face</strong> — that's the cutest thing I've ever seen in the world 😊</li>
+                </ol>
+            </div>
+            
+            <div class="closing">
+                There's so much more I love about you, but I'll save the rest for later 😊
+            </div>
+            
+            <div class="signature">
+                Forever yours,<br>Lingaraju 💕
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Quiz Container -->
+    <div class="container" id="quizContainer">
+        <div class="header">
+            <h1>Our Love Story Quiz</h1>
+            <p class="subtitle">How well do you remember our special moments?</p>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-container">
+            <div class="progress-text">
+                <span id="currentQuestion">Question 1 of 10</span>
+                <span id="scoreDisplay">Score: 0/10</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Content -->
+        <div id="quizContent">
+            <!-- Question Card -->
+            <div class="question-card">
+                <div class="question-number">
+                    <i class="fas fa-heart"></i>
+                    <span id="questionNumber">Question 1</span>
+                </div>
+                <h2 class="question-text" id="questionText">When did we first meet?</h2>
+                
+                <!-- Multiple Choice Options -->
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button class="btn btn-prev" id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button class="btn btn-next" id="nextBtn">
+                    Next Question <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Score Display -->
+            <div class="score-container">
+                <div class="score-title">Current Score</div>
+                <div class="score-value" id="currentScore">0/10</div>
+                <div class="score-subtitle">Get all correct for a special surprise! ❤️</div>
+            </div>
+        </div>
+
+        <!-- Results Page -->
+        <div class="results-container hidden" id="resultsPage">
+            <h2 class="results-title">
+                <i class="fas fa-heart"></i> Quiz Complete! <i class="fas fa-heart"></i>
+            </h2>
+            <div class="final-score" id="finalScore">0/10</div>
+            <p class="results-message" id="resultsMessage">Based on your score, you remember our love story well!</p>
+            <button class="restart-btn" id="restartBtn">
+                <i class="fas fa-redo"></i> Take Quiz Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Your personalized multiple choice quiz data - 10 questions
+        const quizData = [
+            {
+                question: "When did we first meet?",
+                options: [
+                    "24th January 2022",
+                    "14th February 2022",
+                    "24th February 2022",
+                    "26th January 2022"
+                ],
+                correctAnswers: [0],
+                hint: "Our magical beginning was in January 2022",
+                explanation: "We first met on 24th January 2022, the day our beautiful journey began!"
+            },
+            {
+                question: "When did we go on our first date?",
+                options: [
+                    "24th January 2022",
+                    "26th January 2022",
+                    "14th February 2022",
+                    "30th January 2022"
+                ],
+                correctAnswers: [1],
+                hint: "Just two days after we met!",
+                explanation: "Our first date was on 26th January 2022, just two days after we met!"
+            },
+            {
+                question: "Who proposed first?",
+                options: [
+                    "Lingaraju",
+                    "Tejashwini",
+                    "Both at the same time",
+                    "No one proposed yet"
+                ],
+                correctAnswers: [0],
+                hint: "It wasn't Tejashwini who spoke first",
+                explanation: "Lingaraju was the brave one who proposed first to you, my love!"
+            },
+            {
+                question: "What was my first gift to you?",
+                options: [
+                    "A ring",
+                    "Teddy bear and dress",
+                    "Flowers and chocolates",
+                    "A watch"
+                ],
+                correctAnswers: [1],
+                hint: "Something soft to hug and something beautiful to wear",
+                explanation: "My first gift to you was a cute teddy bear and a beautiful dress!"
+            },
+            {
+                question: "What was my last gift to you?",
+                options: [
+                    "A single rose",
+                    "A love letter",
+                    "Series of gifts",
+                    "A surprise trip"
+                ],
+                correctAnswers: [2],
+                hint: "Not just one, but many surprises!",
+                explanation: "My last gift wasn't just one thing, but a series of gifts to show my love!"
+            },
+            {
+                question: "Will you stay with me forever?",
+                options: [
+                    "Yes",
+                    "No",
+                    "Maybe",
+                    "I need time to think"
+                ],
+                correctAnswers: [0],
+                hint: "The answer comes from your heart",
+                explanation: "The correct answer is Yes! I hope you'll stay with me forever, my love!"
+            },
+            {
+                question: "Who is the better kisser? 😘",
+                options: [
+                    "Lingaraju",
+                    "Tejashwini",
+                    "Both",
+                    "That's our little secret!"
+                ],
+                correctAnswers: [0, 1], // Lingaraju OR Tejashwini are correct
+                hint: "Pick one of us individually, not both together!",
+                explanation: "Both Lingaraju and Tejashwini are amazing kissers individually! You have to pick one of us, not 'Both'! ❤️😘"
+            },
+            {
+                question: "Who is more romantic? ❤️",
+                options: [
+                    "Lingaraju",
+                    "Tejashwini",
+                    "Both equally",
+                    "Neither"
+                ],
+                correctAnswers: [0, 1], // Lingaraju OR Tejashwini are correct
+                hint: "We both have our own romantic ways!",
+                explanation: "Both Lingaraju and Tejashwini are incredibly romantic in their own special ways! But you have to pick one of us, not 'Both equally'! 💕"
+            },
+            {
+                question: "Who is more cunning? 🦊",
+                options: [
+                    "Lingaraju",
+                    "Tejashwini",
+                    "Both",
+                    "Neither"
+                ],
+                correctAnswers: [0], // Only Lingaraju is correct
+                hint: "Who always plans sweet surprises?",
+                explanation: "Lingaraju is the cunning one who always plans sweet surprises and romantic tricks! 😉"
+            },
+            {
+                question: "Who is most caring? 💗",
+                options: [
+                    "Lingaraju",
+                    "Tejashwini",
+                    "Both equally",
+                    "Neither"
+                ],
+                correctAnswers: [1], // Only Tejashwini is correct
+                hint: "Who always takes care of everyone?",
+                explanation: "Tejashwini is the most caring person, always looking after others with so much love and kindness! 🌸"
+            }
+        ];
+
+        // DOM Elements
+        const quizContainer = document.getElementById('quizContainer');
+        const quizContent = document.getElementById('quizContent');
+        const resultsPage = document.getElementById('resultsPage');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentQuestion = document.getElementById('currentQuestion');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const currentScore = document.getElementById('currentScore');
+        const progressFill = document.getElementById('progressFill');
+        const errorPopup = document.getElementById('errorPopup');
+        const errorMessage = document.getElementById('errorMessage');
+        const closeError = document.getElementById('closeError');
+        const restartBtn = document.getElementById('restartBtn');
+        const finalScore = document.getElementById('finalScore');
+        const resultsMessage = document.getElementById('resultsMessage');
+        const surprise = document.getElementById('surprise');
+        const surpriseHearts = document.getElementById('surpriseHearts');
+        const floatingHearts = document.getElementById('floatingHearts');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let quizCompleted = false;
+
+        // Initialize the quiz
+        function initQuiz() {
+            createFloatingHearts();
+            loadQuestion(currentQuestionIndex);
+            updateNavigation();
+            updateProgress();
+            updateScoreDisplay();
+        }
+
+        // Create floating hearts background
+        function createFloatingHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = `${Math.random() * 100}%`;
+                heart.style.animationDelay = `${Math.random() * 3}s`;
+                heart.style.opacity = `${Math.random() * 0.5 + 0.3}`;
+                heart.style.width = `${Math.random() * 20 + 10}px`;
+                heart.style.height = `${Math.random() * 20 + 10}px`;
+                heart.style.backgroundColor = `rgb(${Math.random() * 100 + 155}, ${Math.random() * 50 + 50}, ${Math.random() * 100 + 100})`;
+                floatingHearts.appendChild(heart);
+            }
+        }
+
+        // Create hearts for surprise
+        function createSurpriseHearts() {
+            surpriseHearts.innerHTML = '';
+            const heartIcons = ['❤️', '💖', '💕', '💗', '💓', '💞', '💘', '💝'];
+            
+            for (let i = 0; i < 100; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'surprise-heart';
+                heart.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.fontSize = `${Math.random() * 40 + 20}px`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.opacity = `${Math.random() * 0.5 + 0.5}`;
+                surpriseHearts.appendChild(heart);
+            }
+        }
+
+        // Load a question
+        function loadQuestion(index) {
+            const question = quizData[index];
+            questionNumber.textContent = `Question ${index + 1}`;
+            questionText.textContent = question.question;
+            currentQuestion.textContent = `Question ${index + 1} of ${quizData.length}`;
+            
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+            
+            // Create option elements
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            question.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                
+                // If user already answered this question
+                if (userAnswers[index] === optionIndex) {
+                    optionElement.classList.add('selected');
+                    if (quizCompleted) {
+                        if (question.correctAnswers.includes(optionIndex)) {
+                            optionElement.classList.add('correct');
+                        } else {
+                            optionElement.classList.add('incorrect');
+                        }
+                    }
+                }
+                
+                optionElement.innerHTML = `
+                    <div class="option-letter">${optionLetters[optionIndex]}</div>
+                    <div class="option-content">${option}</div>
+                `;
+                
+                // Add click event only if quiz is not completed
+                if (!quizCompleted) {
+                    optionElement.addEventListener('click', () => selectOption(optionIndex, optionElement));
+                }
+                
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+
+        // Select an option
+        function selectOption(optionIndex, optionElement) {
+            // Remove selection from all options
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            optionElement.classList.add('selected');
+            
+            // Save user's answer
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Check if answer is correct
+            const question = quizData[currentQuestionIndex];
+            const isCorrect = question.correctAnswers.includes(optionIndex);
+            
+            if (isCorrect) {
+                // If not already scored for this question, add to score
+                if (!quizData[currentQuestionIndex].answered) {
+                    score++;
+                    quizData[currentQuestionIndex].answered = true;
+                    updateScoreDisplay();
+                }
+                
+                // Auto-advance after a short delay (except for last question)
+                setTimeout(() => {
+                    if (currentQuestionIndex < quizData.length - 1) {
+                        currentQuestionIndex++;
+                        loadQuestion(currentQuestionIndex);
+                        updateNavigation();
+                        updateProgress();
+                    }
+                }, 800);
+            } else {
+                // Show error popup
+                showError(quizData[currentQuestionIndex].explanation);
+            }
+        }
+
+        // Show error popup
+        function showError(explanation) {
+            errorMessage.textContent = explanation;
+            errorPopup.classList.add('active');
+        }
+
+        // Close error popup
+        closeError.addEventListener('click', () => {
+            errorPopup.classList.remove('active');
+        });
+
+        // Next button click
+        nextBtn.addEventListener('click', () => {
+            // Check if user has selected an answer for current question
+            if (userAnswers[currentQuestionIndex] === null) {
+                showError("Please select an answer before proceeding!");
+                return;
+            }
+            
+            // If this was the last question, show results
+            if (currentQuestionIndex === quizData.length - 1) {
+                showResults();
+                return;
+            }
+            
+            // Move to next question
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+            updateNavigation();
+            updateProgress();
+        });
+
+        // Previous button click
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            loadQuestion(currentQuestionIndex);
+            updateNavigation();
+            updateProgress();
+        });
+
+        // Update navigation buttons
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === quizData.length - 1) {
+                nextBtn.textContent = 'See Results';
+                nextBtn.innerHTML = 'See Results <i class="fas fa-heart"></i>';
+            } else {
+                nextBtn.textContent = 'Next Question';
+                nextBtn.innerHTML = 'Next Question <i class="fas fa-arrow-right"></i>';
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Score: ${score}/${quizData.length}`;
+            currentScore.textContent = `${score}/${quizData.length}`;
+        }
+
+        // Show results
+        function showResults() {
+            quizCompleted = true;
+            
+            // Re-load all questions to show correct/incorrect answers
+            loadQuestion(currentQuestionIndex);
+            
+            quizContent.classList.add('hidden');
+            resultsPage.classList.remove('hidden');
+            
+            finalScore.textContent = `${score}/${quizData.length}`;
+            
+            // Check if perfect score for special surprise
+            if (score === quizData.length) {
+                resultsMessage.innerHTML = "Perfect score! You remembered every moment perfectly!<br>You're the love of my life! ❤️";
+                
+                // Show special surprise after 1 second (HALF THE TIME!)
+                setTimeout(() => {
+                    createSurpriseHearts();
+                    surprise.classList.add('active');
+                }, 1000);
+            } else if (score >= quizData.length * 0.7) {
+                resultsMessage.innerHTML = "Excellent! You remember most of our special moments!<br>Our love story keeps getting better every day! 💕";
+            } else if (score >= quizData.length * 0.5) {
+                resultsMessage.innerHTML = "Good job! You remember our important moments!<br>Let's create many more beautiful memories together! 💗";
+            } else {
+                resultsMessage.innerHTML = "Thanks for playing! Let's create new beautiful memories together!<br>I love you more each day! 💖";
+            }
+        }
+
+        // Restart quiz
+        restartBtn.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            quizCompleted = false;
+            
+            // Reset answered flags
+            quizData.forEach(q => q.answered = false);
+            
+            quizContent.classList.remove('hidden');
+            resultsPage.classList.add('hidden');
+            surprise.classList.remove('active');
+            
+            initQuiz();
+        });
+
+        // Initialize the quiz when page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentQuestionIndex > 0) {
+                prevBtn.click();
+            } else if (e.key === 'ArrowRight' && currentQuestionIndex < quizData.length) {
+                nextBtn.click();
+            } else if (e.key >= '1' && e.key <= '4' && !quizCompleted) {
+                const optionIndex = parseInt(e.key) - 1;
+                const options = document.querySelectorAll('.option');
+                if (optionIndex < options.length) {
+                    options[optionIndex].click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
